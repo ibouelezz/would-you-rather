@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import LoadingBar from "react-redux-loading";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
+import NavBar from "./NavBar";
+import { BrowserRouter } from "react-router-dom";
 
 class App extends Component {
   componentDidMount() {
@@ -11,10 +13,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <BrowserRouter>
         <LoadingBar />
+        <NavBar />
         <Dashboard />
-      </div>
+      </BrowserRouter>
     );
   }
 }
