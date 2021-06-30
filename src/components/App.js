@@ -9,6 +9,7 @@ import QuestionView from "./QuestionView";
 import QuestionNew from "./QuestionNew";
 import ProtectedRoute from "./ProtectedRoute";
 import NavBar from "./NavBar";
+import Leaderboard from "./Leaderboard";
 
 class App extends Component {
   componentDidMount() {
@@ -22,13 +23,14 @@ class App extends Component {
       <BrowserRouter>
         <Fragment>
           <LoadingBar />
-          {authedUser ? <NavBar /> : null}
+          {authedUser ? <NavBar /> : <Redirect to="/login" />}
           <Switch>
-            <Route exact path="/login" component={Login} />
+            <Route path="/login" component={Login} />
             <ProtectedRoute exact path="/" authedUser={authedUser}>
               <Dashboard />
             </ProtectedRoute>
             <Route path="/new" component={QuestionNew} />
+            <Route path="/leaderboard" component={Leaderboard} />
             <Route path="/questions/:id" component={QuestionView} />
           </Switch>
         </Fragment>
