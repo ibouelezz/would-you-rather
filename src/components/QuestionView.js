@@ -131,8 +131,10 @@ class QuestionView extends Component {
     return (
       <Card key={qid} style={{ width: "400px" }}>
         <Card.Content>
-          <Image circular floated="left" size="tiny" src={user.avatarURL} />
-          <Card.Header>{user.name} asks</Card.Header>
+          <Image floated="right" size="tiny" src={user.avatarURL} />
+          <Card.Header style={{ paddingTop: "10px" }}>
+            {user.name} asks
+          </Card.Header>
           <div>Would you rather</div>
           <Card.Description>
             <Form>

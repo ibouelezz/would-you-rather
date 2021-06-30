@@ -14,6 +14,11 @@ class NavBar extends Component {
 
     this.props.dispatch(setAuthedUser(null));
   };
+
+  componentDidUpdate() {
+    this.state.activeItem = this.props.activeIndex;
+  }
+
   render() {
     const { users, authedUser } = this.props;
     // const { loggedIn, avatarURL } = users[authedUser];
@@ -60,8 +65,8 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = ({ authedUser, users }) => {
-  return { authedUser, users };
+const mapStateToProps = ({ authedUser, users, activeIndex }) => {
+  return { authedUser, users, activeIndex };
 };
 
 export default connect(mapStateToProps)(NavBar);
