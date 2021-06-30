@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { formatDate } from "../utils/helpers";
 import { Button, Card, Image, Label, Menu, Tab } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
@@ -40,7 +39,11 @@ class Question extends Component {
       );
     });
 
-    return <Card.Group>{cards}</Card.Group>;
+    return (
+      <Card.Group style={{ justifyContent: "center", margin: "0px" }}>
+        {cards}
+      </Card.Group>
+    );
   }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { Menu, Segment, Label } from "semantic-ui-react";
+import { setAuthedUser } from "../actions/authedUser";
 
 class NavBar extends Component {
   state = { activeItem: "home" };
@@ -10,6 +11,8 @@ class NavBar extends Component {
 
   handleLogout = () => {
     console.log("Logout");
+
+    this.props.dispatch(setAuthedUser(null));
   };
   render() {
     const { users, authedUser } = this.props;

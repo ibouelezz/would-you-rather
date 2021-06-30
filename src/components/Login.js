@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Dropdown, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { setAuthedUser } from "../actions/authedUser";
+import { Redirect } from "react-router-dom";
 
 const options = [
   { key: "johndoe", text: "John Doe", value: "johndoe" },
@@ -12,21 +13,27 @@ const options = [
 class Login extends Component {
   state = {
     selectedUser: "johndoe",
+    redirect: false,
   };
 
   handleChange = (e) => {
-    console.log(e.target.innerHTML.replace(" ", "").toLowerCase());
+    console.log(e.target.innerText.replace(" ", "").toLowerCase());
 
     this.setState({
-      selectedUser: e.target.innerHTML.replace(" ", "").toLowerCase(),
+      selectedUser: e.target.innerText.replace(" ", "").toLowerCase(),
     });
   };
 
   handleLogin = () => {
     this.props.dispatch(setAuthedUser(this.state.selectedUser));
+    this.setState({ redirect: true });
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div>
         I'd like to login as{" "}

@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Label, Menu, Tab } from "semantic-ui-react";
 import Question from "./Question";
-// import Question from "./Question";
+import NavBar from "./NavBar";
 
 class Dashboard extends Component {
   render() {
     let answeredQuestions = [];
     let unansweredQuestions = [];
 
-    const { authedUser, users, questions, questionIds } = this.props;
+    const { authedUser, users, questionIds } = this.props;
+
+    console.log(authedUser);
 
     authedUser
       ? Object.keys(users[authedUser].answers).map((qid) => {
@@ -20,13 +22,6 @@ class Dashboard extends Component {
     questionIds.map((qid) => {
       answeredQuestions.includes(qid) ? null : unansweredQuestions.push(qid);
     });
-
-    // questionIds.map((qid) => {
-    //   questions[qid].optionOne.votes.length !== 0 ||
-    //   questions[qid].optionTwo.votes.length !== 0
-    //     ? answeredQuestions.push(qid)
-    //     : unansweredQuestions.concat(qid);
-    // });
 
     console.log(answeredQuestions, unansweredQuestions);
 
@@ -57,15 +52,10 @@ class Dashboard extends Component {
       },
     ];
     return (
-      //   <div>
-      //     <h3 className="center">Dashboard</h3>
-      //     <ul className="dashboard-list">
-      //       {this.props.questionIds.map((id) => (
-      //         <li key={id}>{/* <Question id={id} /> */}</li>
-      //       ))}
-      //     </ul>
-      //   </div>
-      <Tab panes={panes} />
+      <>
+        {/* <NavBar /> */}
+        <Tab panes={panes} />
+      </>
     );
   }
 }
@@ -74,7 +64,6 @@ function mapStateToProps({ users, questions, authedUser }) {
   return {
     authedUser,
     users,
-    questions,
     questionIds: Object.keys(questions).sort(
       (a, b) => questions[b].timestamp - questions[a].timestamp
     ),
