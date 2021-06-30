@@ -39,7 +39,7 @@ class NavBar extends Component {
               onClick={this.handleItemClick}
             />
           </NavLink>
-          <NavLink to="leaderboard">
+          <NavLink to="/leaderboard">
             <Menu.Item
               name="leaderboard"
               active={activeItem === "leaderboard"}
