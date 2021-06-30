@@ -17,8 +17,6 @@ class Login extends Component {
   };
 
   handleChange = (e) => {
-    console.log(e.target.innerText.replace(" ", "").toLowerCase());
-
     this.setState({
       selectedUser: e.target.innerText.replace(" ", "").toLowerCase(),
     });
@@ -35,8 +33,21 @@ class Login extends Component {
     }
 
     return (
-      <div>
-        I'd like to login as{" "}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+          marginTop: "100px",
+          width: "300px",
+          height: "200px",
+          border: "1px solid black",
+        }}
+      >
+        <p style={{ marginBottom: "0px", padding: "3px" }}>
+          I'd like to login as{" "}
+        </p>
         <Dropdown
           onChange={(e) => this.handleChange(e)}
           downward="true"

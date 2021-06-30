@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from "react";
-import { handleInitialData } from "../actions/shared";
-import { connect } from "react-redux";
-import LoadingBar from "react-redux-loading";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import QuestionView from "./QuestionView";
-import QuestionNew from "./QuestionNew";
-import ProtectedRoute from "./ProtectedRoute";
+import LoadingBar from "react-redux-loading";
+import { connect } from "react-redux";
+
+import { handleInitialData } from "../actions/shared";
+
+import Login from "./Login";
 import NavBar from "./NavBar";
+import Dashboard from "./Dashboard";
 import Leaderboard from "./Leaderboard";
+import QuestionNew from "./QuestionNew";
+import QuestionView from "./QuestionView";
+import PageNotFound from "./PageNotFound";
+import ProtectedRoute from "./ProtectedRoute";
 
 class App extends Component {
   componentDidMount() {
@@ -29,9 +32,13 @@ class App extends Component {
             <ProtectedRoute exact path="/" authedUser={authedUser}>
               <Dashboard />
             </ProtectedRoute>
-            <Route path="/new" component={QuestionNew} />
+            {/* <Route path="/new" component={QuestionNew} /> */}
+            <ProtectedRoute path="/new" authedUser={authedUser}>
+              <QuestionNew />
+            </ProtectedRoute>
             <Route path="/leaderboard" component={Leaderboard} />
             <Route path="/questions/:id" component={QuestionView} />
+            <Route path="/404" component={PageNotFound} />
           </Switch>
         </Fragment>
       </BrowserRouter>

@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Card, Image, Label, Menu, Tab } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { Button, Card, Image } from "semantic-ui-react";
 
 class Question extends Component {
   render() {
     const { users, questions, qids } = this.props;
-
-    // const { id, author, timestamp, optionOne, optionTwo } = questions[qids];
 
     const cards = qids.map((qid) => {
       return (
@@ -15,8 +13,8 @@ class Question extends Component {
           <Card.Content>
             <Image
               circular
-              floated="left"
               size="tiny"
+              floated="left"
               src={users[questions[qid].author].avatarURL}
             />
             <Card.Header>{users[questions[qid].author].name} asks</Card.Header>

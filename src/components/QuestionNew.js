@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Card, Form, Image, Input, Message } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
+
 import { handleAddQuestion } from "../actions/questions";
 import { setActiveIndex } from "../actions/activeIndex";
 
 class QuestionNew extends Component {
   state = {
-    optionOne: "",
-    optionTwo: "",
+    optionOneText: "",
+    optionTwoText: "",
     message: { hidden: true, content: "" },
   };
 
@@ -16,14 +18,14 @@ class QuestionNew extends Component {
   };
 
   handleClick = async () => {
-    const { optionOne: optionOneText, optionTwo: optionTwoText } = this.state;
-    const { authedUser: author, history } = this.props;
+    const { optionOneText, optionTwoText } = this.state;
+    const { authedUser: author } = this.props;
 
     if (!optionOneText || !optionTwoText) {
       this.setState({
         message: {
           hidden: false,
-          content: "Please enter both Option One Text and Option Two Text",
+          content: "Please fill-in input fields",
         },
       });
       return;
@@ -35,45 +37,48 @@ class QuestionNew extends Component {
         },
       });
     }
+
     await this.props.handleAddQuestion({
       optionOneText,
       optionTwoText,
       author,
     });
-    history.push("/");
-    // console.log("PROPS", this.props);
+
+    this.props.history.push("/");
     this.props.setActiveIndex("home");
   };
 
   render() {
     const { authedUser, users } = this.props;
     const user = users[authedUser];
-    const { message } = this.state;
+    const { optionOneText, optionTwoText, message } = this.state;
 
     return (
       <div>
         <Card.Group centered>
-          <Card style={{ width: "400px" }}>
+          <Card style={{ width: "500px" }}>
             <Card.Content>
               <Image floated="right" size="tiny" src={user.avatarURL} />
               <Card.Header>{user.name} asks</Card.Header>
-              <div>Would you rather</div>
+              <div>
+                <i>Would you rather</i>
+              </div>
               <Card.Description>
                 <Form>
                   <Form.Field>
                     <Input
-                      id="optionOne"
-                      placeholder="Enter Option One Text Here"
-                      value={this.state.optionOne}
+                      placeholder="Option One"
+                      id="optionOneText"
                       onChange={this.handleOnChange}
+                      value={optionOneText}
                     />
                   </Form.Field>
                   <Form.Field>
                     <Input
-                      id="optionTwo"
-                      placeholder="Enter Option One Text Here"
-                      value={this.state.optionTwo}
+                      placeholder="Option Two"
+                      id="optionTwoText"
                       onChange={this.handleOnChange}
+                      value={optionTwoText}
                     />
                   </Form.Field>
                   <Message hidden={message.hidden} negative>
@@ -101,6 +106,6 @@ const mapStateToProps = ({ authedUser, users }) => {
   return { authedUser, users };
 };
 
-export default connect(mapStateToProps, { handleAddQuestion, setActiveIndex })(
-  QuestionNew
+export default withRouter(
+  connect(mapStateToProps, { handleAddQuestion, setActiveIndex })(QuestionNew)
 );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { Menu, Segment, Label } from "semantic-ui-react";
 import { setAuthedUser } from "../actions/authedUser";
@@ -11,7 +11,6 @@ class NavBar extends Component {
 
   handleLogout = () => {
     console.log("Logout");
-
     this.props.dispatch(setAuthedUser(null));
   };
 
@@ -21,7 +20,6 @@ class NavBar extends Component {
 
   render() {
     const { users, authedUser } = this.props;
-    // const { loggedIn, avatarURL } = users[authedUser];
     const { activeItem } = this.state;
 
     return (

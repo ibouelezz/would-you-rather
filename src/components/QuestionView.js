@@ -2,19 +2,23 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   Card,
-  Image,
-  Segment,
-  Label,
-  Progress,
-  Button,
-  Form,
-  Radio,
   Message,
+  Progress,
+  Segment,
+  Button,
+  Label,
+  Radio,
+  Image,
+  Form,
 } from "semantic-ui-react";
+
 import { handleAnswerQuestion } from "../actions/questions";
 
 class QuestionView extends Component {
-  state = { vote: null, message: { hidden: true, content: "" } };
+  state = {
+    vote: null,
+    message: { hidden: true, content: "" },
+  };
 
   handleChange = (_, data) => {
     this.setState({ vote: data.value });
@@ -27,7 +31,7 @@ class QuestionView extends Component {
       this.setState({
         message: {
           hidden: false,
-          content: "Please select an option",
+          content: "Select an option, please!",
         },
       });
       return;
@@ -46,9 +50,9 @@ class QuestionView extends Component {
     handleAnswerQuestion({ authedUser, qid, answer });
   };
 
-  questionResult = () => {
-    const qid = this.props.match.params.id;
+  pollResult = () => {
     const { authedUser, questions, users } = this.props;
+    const qid = this.props.match.params.id;
 
     const question = questions[qid];
     if (!question) {
@@ -57,43 +61,45 @@ class QuestionView extends Component {
 
     const user = users[question.author];
 
-    const votedForOptionOne = question.optionOne.votes.includes(authedUser);
-    const votedForOptionTwo = question.optionTwo.votes.includes(authedUser);
-    const voteCountOptionOne = question.optionOne.votes.length;
-    const voteCountOptionTwo = question.optionTwo.votes.length;
-    const totalVotes = voteCountOptionOne + voteCountOptionTwo;
-    const votePercentOptionOne =
-      Math.round((voteCountOptionOne / totalVotes) * 10000) / 100;
-    const votePercentOptionTwo =
-      Math.round((voteCountOptionTwo / totalVotes) * 10000) / 100;
+    const votedOptionOne = question.optionOne.votes.includes(authedUser);
+    const votedOptionTwo = question.optionTwo.votes.includes(authedUser);
+    const votesOptionOne = question.optionOne.votes.length;
+    const votesOptionTwo = question.optionTwo.votes.length;
+    const totalVotes = votesOptionOne + votesOptionTwo;
+    const percentageOptionOne =
+      Math.round((votesOptionOne / totalVotes) * 10000) / 100;
+    const percentageOptionTwo =
+      Math.round((votesOptionTwo / totalVotes) * 10000) / 100;
 
     return (
       <Card key={qid} style={{ width: "400px" }}>
         <Card.Content>
           <Image circular floated="left" size="tiny" src={user.avatarURL} />
           <Card.Header>{user.name} asks</Card.Header>
-          <div>Would you rather</div>
+          <div>
+            <i>Would you rather</i>
+          </div>
           <Card.Description>
             <Segment>
-              {votedForOptionOne && (
-                <Label as="a" color="red" ribbon="right">
+              {votedOptionOne && (
+                <Label ribbon="right" color="red">
                   Your Vote
                 </Label>
               )}
               <p>{question.optionOne.text}</p>
-              <Progress percent={votePercentOptionOne} progress>
-                {voteCountOptionOne} out of {totalVotes} votes
+              <Progress percent={percentageOptionOne} progress>
+                {votesOptionOne} out of {totalVotes} votes
               </Progress>
             </Segment>
             <Segment>
-              {votedForOptionTwo && (
-                <Label color="red" ribbon="right">
+              {votedOptionTwo && (
+                <Label ribbon="right" color="red">
                   Your Vote
                 </Label>
               )}
               <p>{question.optionTwo.text}</p>
-              <Progress percent={votePercentOptionTwo} progress>
-                {voteCountOptionTwo} out of {totalVotes} votes
+              <Progress percent={percentageOptionTwo} progress>
+                {votesOptionTwo} out of {totalVotes} votes
               </Progress>
             </Segment>
           </Card.Description>
@@ -102,7 +108,7 @@ class QuestionView extends Component {
     );
   };
 
-  didAnswer() {
+  didVote() {
     const { authedUser, questions } = this.props;
     const qid = this.props.match.params.id;
 
@@ -117,7 +123,7 @@ class QuestionView extends Component {
     );
   }
 
-  questionAnswer = () => {
+  pollVote = () => {
     const { vote, message } = this.state;
 
     const { authedUser, questions, users } = this.props;
@@ -129,30 +135,30 @@ class QuestionView extends Component {
 
     const user = users[question.author];
     return (
-      <Card key={qid} style={{ width: "400px" }}>
+      <Card key={qid}>
         <Card.Content>
-          <Image floated="right" size="tiny" src={user.avatarURL} />
-          <Card.Header style={{ paddingTop: "10px" }}>
-            {user.name} asks
-          </Card.Header>
-          <div>Would you rather</div>
+          <Image size="tiny" src={user.avatarURL} floated="right" />
+          <Card.Header>{user.name} asks</Card.Header>
+          <div>
+            <i>Would you rather</i>
+          </div>
           <Card.Description>
             <Form>
               <Form.Field>
                 <Radio
-                  label={question.optionOne.text}
                   name="radioGroupVote"
-                  value="optionOne"
+                  label={question.optionOne.text}
                   checked={vote === "optionOne"}
+                  value="optionOne"
                   onChange={this.handleChange}
                 />
               </Form.Field>
               <Form.Field>
                 <Radio
-                  label={question.optionTwo.text}
                   name="radioGroupVote"
-                  value="optionTwo"
+                  label={question.optionTwo.text}
                   checked={vote === "optionTwo"}
+                  value="optionTwo"
                   onChange={this.handleChange}
                 />
               </Form.Field>
@@ -186,10 +192,10 @@ class QuestionView extends Component {
 
   render() {
     let result;
-    if (this.didAnswer() === true) {
-      result = this.questionResult();
+    if (this.didVote() === true) {
+      result = this.pollResult();
     } else {
-      result = this.questionAnswer();
+      result = this.pollVote();
     }
     return <Card.Group centered>{result}</Card.Group>;
   }
