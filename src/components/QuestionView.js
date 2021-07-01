@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
 import {
   Card,
   Message,
@@ -110,7 +111,12 @@ class QuestionView extends Component {
 
   didVote() {
     const { authedUser, questions } = this.props;
-    const qid = this.props.match.params.id;
+    const qid = this.props.match ? this.props.match.params.id : null;
+
+    if (!qid) {
+      console.log(this.props.history);
+      <Redirect to="/404" />;
+    }
 
     const question = questions[qid];
     if (!question) {
@@ -127,7 +133,7 @@ class QuestionView extends Component {
     const { vote, message } = this.state;
 
     const { authedUser, questions, users } = this.props;
-    const qid = this.props.match.params.id;
+    const qid = this.props.match ? this.props.match.params.id : null;
     const question = questions[qid];
     if (!question) {
       return;
@@ -180,17 +186,23 @@ class QuestionView extends Component {
   };
 
   componentDidMount() {
+    console.log("didMount");
     const { questions } = this.props;
-    const qid = this.props.match.params.id;
+    const qid = this.props.match ? this.props.match.params.id : null;
 
     const question = questions[qid];
     if (!question) {
       const { history } = this.props;
       history.push("/404");
+      // <Redirect to="/404" />;
     }
   }
 
   render() {
+    if (this.props.lastRoute.includes("/questions/")) {
+      <Redirect to="/404" />;
+    }
+
     let result;
     if (this.didVote() === true) {
       result = this.pollResult();
@@ -201,12 +213,15 @@ class QuestionView extends Component {
   }
 }
 
-function mapStateToProps({ authedUser, users, questions }) {
+function mapStateToProps({ authedUser, users, questions, lastRoute }) {
   return {
     authedUser,
     users,
     questions,
+    lastRoute,
   };
 }
 
-export default connect(mapStateToProps, { handleAnswerQuestion })(QuestionView);
+export default withRouter(
+  connect(mapStateToProps, { handleAnswerQuestion })(QuestionView)
+);

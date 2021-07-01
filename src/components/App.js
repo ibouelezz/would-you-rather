@@ -33,11 +33,17 @@ class App extends Component {
               <Dashboard />
             </ProtectedRoute>
             {/* <Route path="/new" component={QuestionNew} /> */}
-            <ProtectedRoute path="/new" authedUser={authedUser}>
+            <ProtectedRoute path="/add" authedUser={authedUser}>
               <QuestionNew />
             </ProtectedRoute>
-            <Route path="/leaderboard" component={Leaderboard} />
-            <Route path="/questions/:id" component={QuestionView} />
+            {/* <Route path="/leaderboard" component={Leaderboard} /> */}
+            <ProtectedRoute path="/leaderboard" authedUser={authedUser}>
+              <Leaderboard />
+            </ProtectedRoute>
+            {/* <Route path="/questions/:id" component={QuestionView} /> */}
+            <ProtectedRoute path="/questions/:id" authedUser={authedUser}>
+              <QuestionView />
+            </ProtectedRoute>
             <Route path="/404" component={PageNotFound} />
           </Switch>
         </Fragment>

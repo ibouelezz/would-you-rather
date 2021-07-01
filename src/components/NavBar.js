@@ -32,7 +32,7 @@ class NavBar extends Component {
               onClick={this.handleItemClick}
             />
           </NavLink>
-          <NavLink to="/new">
+          <NavLink to="/add">
             <Menu.Item
               name="new question"
               active={activeItem === "new question"}

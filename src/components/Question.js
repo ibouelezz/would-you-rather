@@ -6,8 +6,22 @@ import { Button, Card, Image } from "semantic-ui-react";
 class Question extends Component {
   render() {
     const { users, questions, qids } = this.props;
+    const sortQuestionsByTimeStamp = (q) => {
+      const questionsSorted = {};
+      qids
+        .map((qid) => questions[qid])
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .forEach((question) => {
+          questionsSorted[question.id] = question;
+        });
+      return questionsSorted;
+    };
 
-    const cards = qids.map((qid) => {
+    console.log(sortQuestionsByTimeStamp(qids));
+
+    const _qids = sortQuestionsByTimeStamp(qids);
+
+    const cards = Object.keys(_qids).map((qid) => {
       return (
         <Card key={qid}>
           <Card.Content>

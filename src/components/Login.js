@@ -25,6 +25,9 @@ class Login extends Component {
   handleLogin = () => {
     this.props.dispatch(setAuthedUser(this.state.selectedUser));
     this.setState({ redirect: true });
+
+    const { history, lastRoute } = this.props;
+    lastRoute ? history.push(lastRoute) : history.push("/");
   };
 
   render() {
@@ -67,4 +70,8 @@ class Login extends Component {
   }
 }
 
-export default connect()(Login);
+function mapStateToProps({ lastRoute }) {
+  return { lastRoute };
+}
+
+export default connect(mapStateToProps)(Login);
